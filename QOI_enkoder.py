@@ -20,7 +20,7 @@ def qoiHeader(width, height, mode): # 14 bajtov
         colorspace = 1
     if mode == 'RGBA':
         channels = 4
-        colorspace = 0 # ali 1? vseeno za file ampak javi drugačnost
+        colorspace = 1 # ali 0? vseeno za file ampak javi drugačnost
 
     header = magic + int(width).to_bytes(4,'big') + int(height).to_bytes(4,'big') + channels.to_bytes(1,'big') + colorspace.to_bytes(1,'big')
     return header
@@ -33,7 +33,7 @@ def qoiHash(pixel):
 if __name__ == "__main__":
 
     # Uvozi datoteko
-    image = Image.open('./qoi_test_images/wikipedia_008.png') # kodim23
+    image = Image.open('./qoi_test_images/monument.png') # kodim23
 
     # Podatki iz datoteke
     #print(image.format)

@@ -21,7 +21,7 @@ if __name__ == "__main__":
     QOI_OP_RUN   = 0b11000000
     QOI_OP_INDEX = 0b00000000
     QOI_OP_DIFF  = 0b01000000
-    QOI_OP_LUMA  = 0b10000000 # 0x80
+    QOI_OP_LUMA  = 0b10000000
     QOI_OP_RGB   = 0b11111110
     QOI_OP_RGBA  = 0b11111111
 
@@ -53,26 +53,23 @@ if __name__ == "__main__":
     qoi_end_marker = b'\x00\x00\x00\x00\x00\x00\x00\x01'   
 
     buffer = qoiFile[14:(len(qoiFile) - len(qoi_end_marker))] # buffer pixlov brez headerja in konca
-    bufferEnd = []
 
     array = [[0, 0, 0, 0]] * 64 
     px = [0, 0, 0, 255]
-    zaporedje = 0
-    pixelEncoded = bytearray()
+    bufferEnd = bytearray()
 
     # Dekodiranje
     i = 0
     while i < len(buffer):
 
         byte = buffer[i]
-
+            
         # QOI_OP_RGB #
         if byte == QOI_OP_RGB:
             px[0] = buffer[i + 1]
             px[1] = buffer[i + 2]
             px[2] = buffer[i + 3]
-            px[3] = 255
-            bufferEnd.extend(px)
+            bufferEnd.extend(px[:channels])
             i += 4
         
         # QOI_OP_RGBA #
@@ -81,14 +78,14 @@ if __name__ == "__main__":
             px[1] = buffer[i + 2]
             px[2] = buffer[i + 3]
             px[3] = buffer[i + 4]
-            bufferEnd.extend(px)
+            bufferEnd.extend(px[:channels])
             i += 5
 
         # QOI_OP_INDEX #
         elif (QOI_op_maska & byte) == QOI_OP_INDEX:
             index = (byte & QOI_op_data)
             px = array[index]
-            bufferEnd.extend(px)
+            bufferEnd.extend(px[:channels])
             i += 1
 
         # QOI_OP_DIFF #
@@ -97,43 +94,45 @@ if __name__ == "__main__":
             dr = ((data & QOI_df_red) >> 4) - 2
             dg = ((data & QOI_df_green) >> 2) - 2
             db = (data & QOI_df_blue) - 2
-            px[0] = (px[0] + dr) & 0b11111111
-            px[1] = (px[1] + dg) & 0b11111111
-            px[2] = (px[2] + db) & 0b11111111
-            bufferEnd.extend(px)
+            px[0] = (px[0] + dr) & 0xFF
+            px[1] = (px[1] + dg) & 0xFF
+            px[2] = (px[2] + db) & 0xFF
+            bufferEnd.extend(px[:channels])
             i += 1
 
         # QOI_OP_LUMA #
         elif (QOI_op_maska & byte) == QOI_OP_LUMA:
-            dg = (byte & QOI_luma_dg) - 32 # bias
             byte2 = buffer[i + 1]
+            dg = (byte & QOI_luma_dg) - 32 # bias
             drdg = ((byte2 & QOI_luma_rg) >> 4) - 8
             dbdg = (byte2 & QOI_luma_bg) - 8
 
             dr = drdg + dg
             db = dbdg + dg
 
-            px[0] = (px[0] + dr) & 0b11111111
-            px[1] = (px[1] + dg) & 0b11111111
-            px[2] = (px[2] + db) & 0b11111111
-            bufferEnd.extend(px)
+            px[0] = (px[0] + dr) & 0xFF
+            px[1] = (px[1] + dg) & 0xFF
+            px[2] = (px[2] + db) & 0xFF
+            bufferEnd.extend(px[:channels])
             i += 2
 
         # QOI_OP_RUN #
         elif (QOI_op_maska & byte) == QOI_OP_RUN:
-            dataNum = (byte & QOI_op_data) + 1 # bias
-            for j in range(dataNum):
-                bufferEnd.extend(px)
+            run = (byte & QOI_op_data) + 1 # bias
+            for j in range(run):
+                bufferEnd.extend(px[:channels])
             i += 1
             
-
-        index = qoiHash(px)
-        array[index] = px
-
+        array[qoiHash(px)] = px[:]
         
+
     # Shrani file
-    pic = np.array(bufferEnd, dtype=np.uint8).reshape((height, width, 4))
-    image = Image.fromarray(pic, 'RGBA')
+    if channels == 4:
+        pic = np.array(bufferEnd, dtype=np.uint8).reshape((height, width, 4))
+        image = Image.fromarray(pic, 'RGBA')
+    else:
+        pic = np.array(bufferEnd, dtype=np.uint8).reshape((height, width, 3))
+        image = Image.fromarray(pic, 'RGB')
 
     image.show()
     image.save('output.png')
