@@ -10,6 +10,7 @@ import QOI as qoi
 import numpy as np
 import os
 import matplotlib.pyplot as plt
+import time
 
 
 if __name__ == "__main__":
@@ -49,6 +50,8 @@ if __name__ == "__main__":
     ######################
     ###### Naloga 3 ######
     ######################
+    timeEncode = []
+    timeDecode= []
 
     ### Nastavi vhodno datoteko in izhodni format datoteke ###
     # 3.1 - Kodiranje in dekodiranje vseh slik v različne formate (preverjanje napak: OK!)
@@ -62,6 +65,7 @@ if __name__ == "__main__":
 
 
         ### Kodiranje datoteke ###
+        timeStart = time.time()
         # Uvozi datoteko
         image = Image.open(inputFile)
         qoiOutput = qoi.QOI_encoder(image)
@@ -70,9 +74,13 @@ if __name__ == "__main__":
         with open('./Slike/archive/QOI/kodim' + num + '.qoi', 'wb') as file:
             file.write(qoiOutput)
 
+        timeEnd = time.time()
+        timeEncode.append((timeEnd-timeStart))
+
 
         ### Dekodiranje datoteke ###
         # Uvozi datoteko
+        timeStart = time.time()
         file = './Slike/archive/QOI/kodim' + num + '.qoi'
         with open(file, 'rb') as file:
             qoiFile = file.read()
@@ -80,7 +88,14 @@ if __name__ == "__main__":
         # Shrani
         image = qoi.QOI_decoder(qoiFile, 0)
         image.save('./Slike/archive/NewPNG/kodim' + num + '.png')
+        timeEnd = time.time()
+        timeDecode.append((timeEnd-timeStart))
         image.save('./Slike/archive/NewBMP/kodim' + num + '.bmp')
+
+    avgTimeEncode = sum(timeEncode) / len(timeEncode)
+    avgTimeDecode = sum(timeDecode) / len(timeDecode)
+    print("Povprečen čas kodiranja:", avgTimeEncode)
+    print("Povprečen čas dekodiranja:", avgTimeDecode)
 
 
     # 3.2 - Srednja kvadratna napaka

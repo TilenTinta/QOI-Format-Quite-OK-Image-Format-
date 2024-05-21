@@ -33,13 +33,13 @@ def qoiHash(pixel):
 if __name__ == "__main__":
 
     # Uvozi datoteko
-    image = Image.open('./qoi_test_images/monument.png') # kodim23
+    image = Image.open('./Slike/qoi_test_images/monument.png') # kodim23
 
     # Podatki iz datoteke
     #print(image.format)
     width, height = image.size
     mode = image.mode
-    print(mode)
+    #print(mode)
     piksli = list(image.getdata()) # (r, g, b, "a")
 
     # Header, end #

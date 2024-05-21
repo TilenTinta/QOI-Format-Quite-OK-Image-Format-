@@ -1,0 +1,113 @@
+časi referenčnega kodirnika/dekodirnika
+
+ kodirnik PNG -> QOI
+	 Collected times:
+		kodim01.qoi: 0m0,028s
+		kodim02.qoi: 0m0,027s
+		kodim03.qoi: 0m0,026s
+		kodim04.qoi: 0m0,028s
+		kodim05.qoi: 0m0,027s
+		kodim06.qoi: 0m0,026s
+		kodim07.qoi: 0m0,038s
+		kodim08.qoi: 0m0,036s
+		kodim09.qoi: 0m0,028s
+		kodim10.qoi: 0m0,032s
+		kodim11.qoi: 0m0,027s
+		kodim12.qoi: 0m0,024s
+		kodim13.qoi: 0m0,029s
+		kodim14.qoi: 0m0,027s
+		kodim15.qoi: 0m0,029s
+		kodim16.qoi: 0m0,023s
+		kodim17.qoi: 0m0,025s
+		kodim18.qoi: 0m0,029s
+		kodim19.qoi: 0m0,029s
+		kodim20.qoi: 0m0,021s
+		kodim21.qoi: 0m0,026s
+		kodim22.qoi: 0m0,030s
+		kodim23.qoi: 0m0,023s
+		kodim24.qoi: 0m0,030s	
+		
+		Clean data:
+		0.028
+		0.027
+		0.026
+		0.028
+		0.027
+		0.026
+		0.038
+		0.036
+		0.028
+		0.032
+		0.027
+		0.024
+		0.029
+		0.027
+		0.029
+		0.023
+		0.025
+		0.029
+		0.029
+		0.021
+		0.026
+		0.030
+		0.023
+		0.030
+		
+		Average: 0.0278s
+
+		
+ dekodirnik QOI -> PNG
+	Collected times:
+		kodim01.qoi: 0m0,124s
+		kodim02.qoi: 0m0,123s
+		kodim03.qoi: 0m0,128s
+		kodim04.qoi: 0m0,129s
+		kodim05.qoi: 0m0,145s
+		kodim06.qoi: 0m0,114s
+		kodim07.qoi: 0m0,127s
+		kodim08.qoi: 0m0,138s
+		kodim09.qoi: 0m0,117s
+		kodim10.qoi: 0m0,125s
+		kodim11.qoi: 0m0,129s
+		kodim12.qoi: 0m0,121s
+		kodim13.qoi: 0m0,146s
+		kodim14.qoi: 0m0,134s
+		kodim15.qoi: 0m0,122s
+		kodim16.qoi: 0m0,113s
+		kodim17.qoi: 0m0,122s
+		kodim18.qoi: 0m0,140s
+		kodim19.qoi: 0m0,122s
+		kodim20.qoi: 0m0,104s
+		kodim21.qoi: 0m0,125s
+		kodim22.qoi: 0m0,133s
+		kodim23.qoi: 0m0,123s
+		kodim24.qoi: 0m0,125s
+		
+		Clean data:
+		0.124
+		0.123
+		0.128
+		0.129
+		0.145
+		0.114
+		0.127
+		0.138
+		0.117
+		0.125
+		0.129
+		0.121
+		0.146
+		0.134
+		0.122
+		0.113
+		0.122
+		0.140
+		0.122
+		0.104
+		0.125
+		0.133
+		0.123
+		0.125
+		
+		Average: 0.1262
+
