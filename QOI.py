@@ -134,7 +134,7 @@ def QOI_encoder(image):
     
 
 
-def QOI_decoder(qoiFile):
+def QOI_decoder(qoiFile, state): # slika, oblika vrnjenih podatkov
 
     # Oznake operacij
     QOI_OP_RUN   = 0b11000000
@@ -240,16 +240,26 @@ def QOI_decoder(qoiFile):
             
         array[qoiHash(px)] = px[:]
         
+    if state == 1: 
+        # Za primerjavo datotek med seboj
+        if channels == 4:
+            pic = np.array(bufferEnd, dtype=np.uint8).reshape((height * width, 4))
+            image = pic
+        else:
+            pic = np.array(bufferEnd, dtype=np.uint8).reshape((height * width, 3))
+            image = pic
+        return image
+    
+    else: 
 
-    # Shrani file
-    if channels == 4:
-        pic = np.array(bufferEnd, dtype=np.uint8).reshape((height, width, 4))
-        image = Image.fromarray(pic, 'RGBA')
-    else:
-        pic = np.array(bufferEnd, dtype=np.uint8).reshape((height, width, 3))
-        image = Image.fromarray(pic, 'RGB')
-
-    return image
+        # Shrani file - pravilna oblika datoteke / slike
+        if channels == 4:
+            pic = np.array(bufferEnd, dtype=np.uint8).reshape((height, width, 4))
+            image = Image.fromarray(pic, 'RGBA')
+        else:
+            pic = np.array(bufferEnd, dtype=np.uint8).reshape((height, width, 3))
+            image = Image.fromarray(pic, 'RGB')
+        return image
 
     
     
